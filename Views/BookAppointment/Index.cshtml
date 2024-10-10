@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "BookAppointment";
+}
+
+<h3>Book Appointment</h3>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 100%;">
+                    <img src="~/images/@item.Img" class="card-img-top" alt="@item.Name" style="height: 200px; width: 100%; object-fit: contain;">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">Specialization:@item.Specialization</p>
+                        <a href="/BookAppointment/completeAppointment?id=@item.Id" class="btn btn-primary">Book Appointment</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

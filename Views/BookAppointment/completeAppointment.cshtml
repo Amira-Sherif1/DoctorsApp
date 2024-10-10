@@ -1,0 +1,98 @@
+﻿<h2>Complete Appointment with @Model.Name</h2>
+<form id="appointmentForm" action="/BookAppointment/CompleteBook" method="post">
+    <input type="hidden" name="id" value="@Model.Id" /> <!-- Ensure DoctorId is passed -->
+
+    <div class="form-group">
+        <label for="name">Patient Name:</label> <br />
+        <input type="text" class="form-control" name="name" style="width: 100%;">
+        <!-- Error message for the name field -->
+        <span class="text-danger" id="nameError"></span><br />
+    </div>
+
+    <div class="form-group">
+        <label for="date">Appointment Date:</label><br />
+        <input type="date" class="form-control" name="date" id="date" style="width: 100%;" min="">
+        <!-- Error message for the date field -->
+        <span class="text-danger" id="dateError"></span><br />
+    </div>
+
+    <div class="form-group">
+        <label for="time">Appointment Time:</label><br />
+        <input type="time" class="form-control" name="time" id="time" style="width: 100%;">
+        <!-- Error message for the time field -->
+        <span class="text-danger" id="timeError"></span><br />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Complete Appointment
+    </button>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="successModalLabel">Success!</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Your appointment has been successfully completed!
+            </div>
+            <div class="modal-footer">
+                <a href="/Home/Index"><button type="button" class="btn btn-primary">Return to home page</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Code -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is included -->
+<script>
+    $(document).ready(function () {
+        // Set the min attribute for the date input field to today's date
+        const today = new Date().toISOString().split('T')[0];
+        $('#date').attr('min', today);
+
+        $('#appointmentForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            // Clear previous error messages
+            $('#nameError').text('');
+            $('#dateError').text('');
+            $('#timeError').text('');
+
+            let valid = true;
+
+            // Validate name field
+            const name = $('input[name="name"]').val().trim();
+            if (name === '') {
+                $('#nameError').text('Please enter the patient name.');
+                valid = false;
+            }
+
+            // Validate time field (no need for date validation, it's handled by the browser)
+            const time = $('input[name="time"]').val();
+            if (time === '') {
+                $('#timeError').text('Please select an appointment time.');
+                valid = false;
+            }
+
+            // If all fields are valid, submit the form via AJAX
+            if (valid) {
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        // Show the modal on success
+                        $('#successModal').modal('show');
+                    },
+                    error: function () {
+                        alert('There was an error completing the appointment.');
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,26 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Doctor</th>
+
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.date</td>
+                <td>@item.time</td>
+                <td>@item.Doctor.Name</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
